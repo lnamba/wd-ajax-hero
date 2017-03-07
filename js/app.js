@@ -2,6 +2,7 @@
   'use strict';
 
   var movies = [];
+  var plot = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -34,6 +35,7 @@
 
       $plot.addClass('waves-effect waves-light btn modal-trigger');
       $plot.attr('href', `#${movie.id}`);
+      $plot.attr('id', `#${movie.id}`);
       $plot.text('Plot Synopsis');
 
       $action.append($plot);
@@ -61,7 +63,7 @@
   $("#search_movies_btn").on("click", function(e){
     // Listen for submissions on the search form. Remember to prevent the default action
     e.preventDefault();
-
+    console.log($("a.btn").get());
     // Validate the user input is not blank
     if ($("#search").val() === "") {
       $("#listings").append("<h2>Please type a keyword to search for.</h2>");
@@ -78,19 +80,55 @@
       console.log(data);
 
       // Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.
-      data.Search.map(function(i, index){
+      data.Search.map(function(i){
         var movieObj = {};
+        var plotObj = {};
         movieObj["id"] = i.imdbID;
         movieObj["poster"] = i.Poster;
         movieObj["title"] = i.Title;
         movieObj["year"] = i.Year;
-        movies.push(movieObj)
+        movies.push(movieObj);
+        // // Handle the HTTP response by pushing a new, well-formed JavaScript object into the global `movies` array.
+        // plotObj["id"] = i.imdbID;
+        // plot.push(plotObj)
       });
       console.log(movies);
-      
+      // console.log(plot);
+
       // Render the `movies` array to the page by calling the `renderMovies()` function with no arguments
-      renderMovies(movies);
+      renderMovies();
+
+      $("a.waves-effect.waves-light.btn.modal-trigger").click(function(){
+        var movId = $(this).attr('id');
+        console.log(`http://www.omdbapi.com/?i=${movId.slice(1)}`)
+        $.getJSON(`http://www.omdbapi.com/?i=${movId.slice(1)}`, function(data){
+          console.log(data.Plot);
+          $("div.modal-content p").empty();
+          $("div.modal-content p").append(data.Plot)
+        });
+      })
+
+      // $("a.waves-effect.waves-light.btn.modal-trigger").click(function(){
+      //   console.log($(this).attr('id'))
+      //   $.getJSON(`http://www.omdbapi.com/?i=${$(this).attr('id')}`, function(data){
+      //     console.log(data.Plot);
+      //   });
+      //   // $("div.modal-content p").append("test")
+      // })
+
+      // $.getJSON(`http://www.omdbapi.com/?i=${$("#search").val()}`, function(data){
+      //
+      // }
+      // plot.map(function(j){
+      //
+      // });
+
     });
+
   });
+
+
+
+
 
 })();
