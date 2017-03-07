@@ -10,12 +10,12 @@ The web application should allow the user to browse movies by search keywords.
 
 More specifically, you'll need to extend the existing JavaScript with the following behavior.
 
-- Listen for submissions on the search form. Remember to prevent the default action.
+- Listen for submissions on the search form. Remember to prevent the default action.  OK
 - Validate the user input is not blank.
-- Clear the previous search results.
-- Send an HTTP request to the [OMDB API](http://omdbapi.com/) search endpoint.
-- Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.
-- Render the `movies` array to the page by calling the `renderMovies()` function with no arguments.
+- Clear the previous search results. OK
+- Send an HTTP request to the [OMDB API](http://omdbapi.com/) search endpoint.   OK
+- Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.   OK
+- Render the `movies` array to the page by calling the `renderMovies()` function with no arguments. OK
 
 Each well-formed `movie` object in the `movies` array must have the following key-value pairs.
 

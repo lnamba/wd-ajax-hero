@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const movies = [];
+  var movies = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -57,4 +57,40 @@
   };
 
   // ADD YOUR CODE HERE
+
+  $("#search_movies_btn").on("click", function(e){
+    // Listen for submissions on the search form. Remember to prevent the default action
+    e.preventDefault();
+
+    // Validate the user input is not blank
+    if ($("#search").val() === "") {
+      $("#listings").append("<h2>Please type a keyword to search for.</h2>");
+      return false;
+    }
+
+    // Clear the previous search results
+    $("#search").empty();
+    $("#listings").empty();
+    movies = [];
+
+    // Send an HTTP request to the [OMDB API](http://omdbapi.com/) search endpoint.
+    $.getJSON(`http://www.omdbapi.com/?s=${$("#search").val()}`, function(data){
+      console.log(data);
+
+      // Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.
+      data.Search.map(function(i, index){
+        var movieObj = {};
+        movieObj["id"] = i.imdbID;
+        movieObj["poster"] = i.Poster;
+        movieObj["title"] = i.Title;
+        movieObj["year"] = i.Year;
+        movies.push(movieObj)
+      });
+      console.log(movies);
+      
+      // Render the `movies` array to the page by calling the `renderMovies()` function with no arguments
+      renderMovies(movies);
+    });
+  });
+
 })();
