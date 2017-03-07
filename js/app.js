@@ -2,7 +2,6 @@
   'use strict';
 
   var movies = [];
-  var plot = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -35,7 +34,6 @@
 
       $plot.addClass('waves-effect waves-light btn modal-trigger');
       $plot.attr('href', `#${movie.id}`);
-      $plot.attr('id', `#${movie.id}`);
       $plot.text('Plot Synopsis');
 
       $action.append($plot);
@@ -88,46 +86,28 @@
         movieObj["title"] = i.Title;
         movieObj["year"] = i.Year;
         movies.push(movieObj);
-        // // Handle the HTTP response by pushing a new, well-formed JavaScript object into the global `movies` array.
-        // plotObj["id"] = i.imdbID;
-        // plot.push(plotObj)
       });
       console.log(movies);
-      // console.log(plot);
 
       // Render the `movies` array to the page by calling the `renderMovies()` function with no arguments
       renderMovies();
 
+      // click handler gets a tags
       $("a.waves-effect.waves-light.btn.modal-trigger").click(function(){
-        var movId = $(this).attr('id');
+        var movId = $(this).attr('href');
         console.log(`http://www.omdbapi.com/?i=${movId.slice(1)}`)
+
+        // JSON call to search by ID, this returns an object which includes a 'Plot' property
         $.getJSON(`http://www.omdbapi.com/?i=${movId.slice(1)}`, function(data){
           console.log(data.Plot);
+          //clears and appends a Plot
           $("div.modal-content p").empty();
           $("div.modal-content p").append(data.Plot)
         });
       })
-
-      // $("a.waves-effect.waves-light.btn.modal-trigger").click(function(){
-      //   console.log($(this).attr('id'))
-      //   $.getJSON(`http://www.omdbapi.com/?i=${$(this).attr('id')}`, function(data){
-      //     console.log(data.Plot);
-      //   });
-      //   // $("div.modal-content p").append("test")
-      // })
-
-      // $.getJSON(`http://www.omdbapi.com/?i=${$("#search").val()}`, function(data){
-      //
-      // }
-      // plot.map(function(j){
-      //
-      // });
-
     });
 
   });
-
-
 
 
 
